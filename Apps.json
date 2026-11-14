@@ -1,0 +1,12 @@
+{
+  "storage_base_url": "https://github.com/mohdtafseer52-cloud/Retro/releases/download/V1.0.0/",
+  "apps": [
+    {
+      "name": "Dr. Driving",
+      "package": "com.ansangha.drdriving",
+      "version": "1.69",
+      "min_android": "Android 4.1 (API 16)",
+      "filename": "com.ansangha.drdriving_1.69-69_minAPI16.nodpi._apkmirror.com.apk"
+    }
+  ]
+}
