@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Play Store - Legacy Android APKs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      color: #4CAF50;
+      margin: 0;
+    }
+    #search {
+      width: 100%;
+      max-width: 500px;
+      padding: 10px;
+      margin: 15px auto;
+      display: block;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+    .app-list {
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    .app-card {
+      background-color: #1e1e1e;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .app-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0 0 5px 0;
+    }
+    .app-meta {
+      font-size: 13px;
+      color: #aaaaaa;
+      margin-bottom: 12px;
+    }
+    .btn-download {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Retro Play Store</h1>
+    <p>Verified Legacy APKs for Android 5.0 & Older</p>
+    <input type="text" id="search" placeholder="Search legacy apps..." onkeyup="filterApps()">
+  </div>
+
+  <div class="app-list" id="app-list">
+    <p style="text-align:center;">Loading catalog from cloud...</p>
+  </div>
+
+  <script>
+    var allApps = [];
+    var baseUrl = "";
+
+    // Fetch the catalog from apps.json
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "apps.json", true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var data = JSON.parse(xhr.responseText);
+        baseUrl = data.storage_base_url;
+        allApps = data.apps;
+        renderApps(allApps);
+      }
+    };
+    xhr.send();
+
+    function renderApps(apps) {
+      var container = document.getElementById("app-list");
+      container.innerHTML = "";
+      for (var i = 0; i < apps.length; i++) {
+        var app = apps[i];
+        var fullDownloadUrl = baseUrl + app.filename;
+        container.innerHTML +=
+          '<div class="app-card">' +
+            '<div class="app-title">' + app.name + ' <span style="font-size:13px; color:#4CAF50;">v' + app.version + '</span></div>' +
+            '<div class="app-meta">Min OS: ' + app.min_android + ' | Package: ' + app.package + '</div>' +
+            '<a class="btn-download" href="' + fullDownloadUrl + '">Download APK</a>' +
+          '</div>';
+      }
+    }
+
+    function filterApps() {
+      var query = document.getElementById("search").value.toLowerCase();
+      var filtered = [];
+      for (var i = 0; i < allApps.length; i++) {
+        if (allApps[i].name.toLowerCase().indexOf(query) !== -1) {
+          filtered.push(allApps[i]);
+        }
+      }
+      renderApps(filtered);
+    }
+  </script>
+
+</body>
+</html>
